@@ -36,6 +36,12 @@ function customRedirectAfterDLETransfer()
 
 			if (isset($matches[1]) && is_numeric(term_exists($matches[1])))
 				$new_url = get_tag_link(term_exists($matches[1]));
+		} elseif (in_array(strtolower(pathinfo($url, PATHINFO_EXTENSION)), array('jpg', 'jpeg', 'gif', 'png', 'bmp'))) {
+			$query_args = array('s' => pathinfo($url, PATHINFO_FILENAME) );
+			$get_posts = new WP_Query($query_args);
+
+			if (isset($get_posts->posts[0]->ID))
+				$new_url = get_permalink($get_posts->posts[0]->ID);
 		}
 		
 		if (is_string($new_url)) {
